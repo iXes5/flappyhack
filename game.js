@@ -184,7 +184,8 @@ const bird = {
 
         //Canvas top max
         if (this.y - this.h/2 <= 0) {
-            this.y = this.h/2
+            this.y = this.h/2;
+            this.speed = 0;
         }
     },
 
