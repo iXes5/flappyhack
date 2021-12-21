@@ -180,6 +180,11 @@ const bird = {
             }else {
                 this.rotation = -25 * DEGREE
             };
+        };
+
+        //Canvas top max
+        if (this.y - this.h/2 <= 0) {
+            this.y = this.h/2
         }
     },
 
