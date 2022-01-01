@@ -69,6 +69,32 @@ document.addEventListener("click", function(evt) {
             break;
     }
 })
+document.body.onkeyup = function(e){
+    if(e.keyCode == 32){
+        switch (state.current) {
+            case state.getReady:
+                state.current = state.game;
+                SWOOSHING.play();
+                break;
+            case state.game:
+                bird.flap();
+                FLAP.play();
+                break;                                  
+            case state.over:
+                let rect = cvs.getBoundingClientRect();
+                let clickX = evt.clientX - rect.left;
+                let clickY = evt.clientY - rect.top;
+                //Start button check
+                if (clickX >= startButton.x && clickX <= startButton.x + startButton.w && clickY >= startButton.y && clickY <= startButton.y + startButton.h) {
+                    pipes.reset();
+                    bird.speedReset();
+                    score.reset();
+                    state.current = state.getReady;
+                }
+                break;
+        }
+    }
+}
 
 //Background
 const bg = {
@@ -180,12 +206,6 @@ const bird = {
             }else {
                 this.rotation = -25 * DEGREE
             };
-        };
-
-        //Canvas top max
-        if (this.y - this.h/2 <= 0) {
-            this.y = this.h/2;
-            this.speed = 0;
         }
     },
 
@@ -281,7 +301,7 @@ const pipes = {
             let bottomPipesYPos = p.y + this.h + this.gap;
             
             //Top pipes touch
-            if (bird.x + bird.radius > p.x && bird.x - bird.radius < p.x + this.w && bird.y - bird.radius < p.y + this.h) {
+            if (bird.x + bird.radius > p.x && bird.x - bird.radius < p.x + this.w && bird.y - bird.radius < p.y + this.h && bird.y + bird.radius > p.y) {
                 state.current = state.over;
                 HIT.play();
                 //No score = dumb
