@@ -302,14 +302,20 @@ const pipes = {
 
             if (p.x + this.w <= 0) {
                 this.position.shift();
+            }
+
+            if (p.x + this.w == bird.x - bird.w/2) {
                 score.value += 1;
                 SCORE.play();
+
+                //Sound of me (for the good player)
                 if (score.value == 10) {
                     ADU.play();
                 }
                 if (score.value == 25) {
                     TROI.play();
                 }
+
                 score.best = Math.max(score.best, score.value);
                 localStorage.setItem("best", score.best);
             }
